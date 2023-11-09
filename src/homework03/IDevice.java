@@ -1,4 +1,4 @@
-package homework_3;
+package homework03;
 
 public interface IDevice {
 
