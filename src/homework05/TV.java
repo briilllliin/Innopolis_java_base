@@ -1,18 +1,38 @@
 package homework05;
 
+import java.util.List;
 import java.util.Objects;
 
-public class TV implements Comparable<TV>{
+public class TV implements Comparable<TV> {
     private String model;
     private int channelNumber;
     private int volume;
     private boolean isOn;
+    private List<Channel> channels;
 
-    public TV(String model, int channelNumber, int volume, boolean isOn) {
+    public TV(String model, int channelNumber, int volume, boolean isOn, List<Channel> channels) {
         this.model = model;
         this.channelNumber = channelNumber;
         this.volume = volume;
         this.isOn = isOn;
+        this.channels = channels;
+    }
+
+    public List<Channel> getChannels() {
+        return channels;
+    }
+
+    public void setChannels(List<Channel> channels) {
+        this.channels = channels;
+    }
+
+    public void changeChannel(int channelNumber) {
+        setChannelNumber(channelNumber);
+        for (Channel channel : channels) {
+            if (channelNumber == channel.getNumber()) {
+                System.out.println("Сейчас вы на канале " + channelNumber);
+            }
+        }
     }
 
     public String getModel() {
@@ -43,8 +63,23 @@ public class TV implements Comparable<TV>{
         this.volume = volume;
     }
 
-    public void setOn(boolean on) {
-        isOn = on;
+    public void switchChannel(int channelNumber) {
+        for (Channel channel : channels) {
+            if (channelNumber == channel.getNumber()) {
+                System.out.println("Теперь вы смотрите канал: " + channel.getName());
+                System.out.println("Программа данного канала: ");
+                channel.getTvProgram();
+            }
+        }
+
+    }
+
+    public void off() {
+        this.isOn = false;
+    }
+
+    public void on() {
+        this.isOn = true;
     }
 
     @Override
