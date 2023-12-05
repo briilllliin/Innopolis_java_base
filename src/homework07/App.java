@@ -4,11 +4,17 @@ import java.util.*;
 
 public class App {
 
-    public static Person createPerson(String name, int sum) {
-        return new Person(name, sum);
+    public static Person createPerson(String name, int age, int sum) {
+        if (age <= 17) {
+            return new PersonChild(name, age, sum);
+        } else if (age <= 65) {
+            return new PersonAdult(name, age, sum);
+        }
+        return new PersonPensioner(name, age, sum);
     }
 
     public static DiscountProduct createProduct(String name, int cost, int discount) {
+
         return new DiscountProduct(name, cost, discount);
     }
 
@@ -46,7 +52,7 @@ public class App {
         Scanner scanner = new Scanner(System.in);
         String line = " ";
         while (true) {
-            System.out.println("Введите покупателей формата <Имя покупателя>" +
+            System.out.println("Введите покупателей формата <Имя покупателя>, <Возраст покупателя>" +
                     " = <Сумма, которая у него имеется>");
             line = scanner.nextLine();
             line = line.replaceAll("\\s", "");
@@ -55,18 +61,22 @@ public class App {
                 break;
             }
             StringBuilder stringBuilder = new StringBuilder(line);
+            int comma = stringBuilder.indexOf(",");
             int equally = stringBuilder.indexOf("=");
             int price = Integer.parseInt(stringBuilder.substring(equally + 1, stringBuilder.length()));
+            int age = Integer.parseInt(stringBuilder.substring(comma + 1, equally));
 
 
-            String name = stringBuilder.substring(0, equally);
+            String name = stringBuilder.substring(0, comma);
             if (name.isEmpty()) {
                 throw new MyException("Имя не может быть пустым");
             }
             if (price < 0) {
-                throw new MyException("Деньги немогут   быть   отрицательными");
+                throw new MyException("Деньги не могут быть   отрицательными");
             }
-            personList.add(createPerson(name, price));
+            personList.add(createPerson(name, age, price));
+
+            System.out.println(personList.getLast().getClass());
         }
 
 
@@ -101,6 +111,7 @@ public class App {
                 throw new MyException("Деньги не могут  быть   отрицательными");
             }
             productList.add(createProduct(name, price, discount));
+
             if (!productList.getLast().checkDiscount(date)) {
                 System.out.println("Скидка закончилась в этот день " + productList.getLast().getDate());
             } else {
@@ -123,11 +134,16 @@ public class App {
             String[] data = answer.split(" ");
 
             Person currPerson = getPerson(data[0], personList);
-            Product currProduct = getProduct(data[1], productList);
+            DiscountProduct currProduct = getProduct(data[1], productList);
 
 
             if (currPerson != null && currProduct != null) {
-                currPerson.buy(currProduct);
+                if ((currPerson instanceof PersonPensioner && currProduct.getDiscount() == 0) ||
+                        (currPerson instanceof PersonPensioner && !currProduct.checkDiscount(new Date()))) {
+                    System.out.println(currPerson.getName() + " покупает только товары со скидкой!");
+                } else {
+                    currPerson.buy(currProduct);
+                }
 
             }
 

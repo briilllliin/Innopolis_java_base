@@ -5,18 +5,24 @@ import java.util.List;
 import java.util.Objects;
 
 public class Person {
-
+    private boolean getCredit;
     private String name;
     private double sum;
+
+    private int age;
     private List<Product> products = new ArrayList<>();
 
-    public Person(String name, int sum) {
+    public Person(String name, int age, int sum) {
         this.name = name;
+        this.age = age;
         this.sum = sum;
     }
 
     public void buy(Product product) {
-        if (this.sum - product.getCost() >= 0) {
+        if ((this.sum - product.getCost() >= 0) || getCredit) {
+            if(this.sum - product.getCost() < 0){
+                System.out.println("Данный продукт можно бдует купить в кредит! Сумма кредита составит: " + (product.getCost() - this.sum));
+            }
             products.add(product);
             buyProduct(product);
             System.out.println(name + " купил/а " + product.getName());
@@ -25,7 +31,7 @@ public class Person {
         }
     }
 
-    public void buyProduct(Product product){
+    public void buyProduct(Product product) {
         setSum(this.sum - product.getCost());
     }
 
@@ -55,7 +61,7 @@ public class Person {
 
     public void getProducts() {
         System.out.print(name + " - ");
-        if(products.isEmpty()){
+        if (products.isEmpty()) {
             System.out.println(name + " ничего не куплено :(");
         }
         for (Product product : products) {
@@ -89,5 +95,13 @@ public class Person {
     @Override
     public int hashCode() {
         return Objects.hash(name, sum, products);
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 }
