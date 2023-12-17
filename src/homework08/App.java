@@ -13,11 +13,9 @@ public class App {
         List<String> output = new ArrayList<>();
 
 
-        Scanner scanner = new Scanner(System.in);
         MyFileReader in = new MyFileReader();
         MyFileWriter out = new MyFileWriter();
 
-        String line = " ";
         List<String> lines = in.readFromLine();
         int count = 0;
 
@@ -40,8 +38,6 @@ public class App {
                 if (sum < 0) {
                     throw new MyException("Деньги немогут   быть   отрицательными");
                 }
-
-
                 personList.add(Person.createPerson(name, sum));
 
             }
@@ -61,7 +57,6 @@ public class App {
                 }
                 productList.add(Product.createProduct(name, sum));
 
-
             }
 
 
@@ -73,7 +68,6 @@ public class App {
                         output.addAll(person.getProducts());
 
                     }
-
                     break;
                 }
                 String[] data = l.split(" ");
