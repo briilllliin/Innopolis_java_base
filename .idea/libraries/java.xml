@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="java">
+    <CLASSES />
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/../mockito-5.10.0/subprojects/subclass/src/test/java" />
+    </SOURCES>
+  </library>
+</component>
